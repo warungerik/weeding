@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weeding - Yoga & Selly</title>
-    <link rel="icon" type="image/x-icon" href="favicon.jpg">
+	  <link rel="icon" type="image/x-icon" href="favicon.jpg">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -146,8 +146,8 @@
             right: 0;
             bottom: 0;
             background-image: radial-gradient(circle at 20% 80%, rgba(218, 165, 32, 0.3) 0%, transparent 50%),
-                                radial-gradient(circle at 80% 20%, rgba(255, 215, 0, 0.3) 0%, transparent 50%),
-                                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="luxury" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="%23DAA520" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23luxury)"/></svg>');
+                              radial-gradient(circle at 80% 20%, rgba(255, 215, 0, 0.3) 0%, transparent 50%),
+                              url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="luxury" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="%23DAA520" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23luxury)"/></svg>');
         }
         
         .hero-bg::after {
@@ -651,7 +651,6 @@
             position: relative;
             display: inline-block; /* To apply pseudo-elements correctly */
             padding: 0 10px; /* Small padding to prevent clipping */
-            white-space: nowrap; /* Prevent line breaks */
         }
 
         .hero-title-new::before,
@@ -699,11 +698,6 @@
                 font-size: 3.5rem;
             }
         }
-        @media (max-width: 480px) {
-            .hero-title-new {
-                font-size: 2.5rem;
-            }
-        }
 
         .hero-subtitle {
             font-size: 1.8rem; /* Slightly larger subtitle */
@@ -742,10 +736,12 @@
     </style>
 </head>
 <body class="poppins bg-gradient-to-br from-amber-50 via-white to-yellow-50">
+    <!-- Floating Particles -->
     <div id="particles"></div>
 
+    <!-- Book Animation Container -->
     <div class="book-container" id="bookContainer">
-        <button class="close-book" onclick="closeBook()">×</button>
+        <button class="close-book" onclick="closeBook()">&times;</button>
         <div class="book" id="book">
             <div class="book-cover" id="bookCover">
                 <div class="book-cover-content">
@@ -779,7 +775,9 @@
         </div>
     </div>
 
+    <!-- Hero Section -->
     <section id="home" class="hero-bg min-h-screen flex items-center justify-center relative overflow-hidden">
+        <!-- Enhanced Ornamental Decorations -->
         <div class="hero-ornament-new" style="top: 5%; left: 8%; animation-delay: 0s;"><i class="fas fa-leaf"></i></div>
         <div class="hero-ornament-new" style="top: 15%; right: 12%; animation-delay: -3s;"><i class="fas fa-gem"></i></div>
         <div class="hero-ornament-new" style="bottom: 10%; left: 15%; animation-delay: -6s;"><i class="fas fa-crown"></i></div>
@@ -819,6 +817,7 @@
         </div>
     </section>
 
+    <!-- Navigation -->
     <nav class="fixed top-0 w-full navbar-glass shadow-lg z-50 transition-all duration-300" id="navbar">
         <div class="container mx-auto px-4 py-4">
             <div class="flex justify-center space-x-8">
@@ -830,6 +829,7 @@
         </div>
     </nav>
 
+    <!-- Countdown Section -->
     <section class="py-20 relative overflow-hidden">
         <div class="absolute inset-0 bg-gradient-to-r from-yellow-50 via-amber-50 to-yellow-50"></div>
         <div class="container mx-auto px-4 text-center relative z-10">
@@ -859,6 +859,7 @@
         </div>
     </section>
 
+    <!-- Wedding Details -->
     <section id="details" class="py-20 relative">
         <div class="absolute inset-0 bg-gradient-to-br from-white via-yellow-50 to-amber-50"></div>
         <div class="container mx-auto px-4 relative z-10">
@@ -869,6 +870,7 @@
             </div>
             
             <div class="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+                <!-- Akad -->
                 <div class="luxury-card rounded-3xl p-10 text-center hover-lift">
                     <div class="golden-gradient w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
                         <i class="fas fa-mosque text-white text-3xl"></i>
@@ -895,6 +897,7 @@
                     </button>
                 </div>
 
+                <!-- Resepsi -->
                 <div class="luxury-card rounded-3xl p-10 text-center hover-lift">
                     <div class="golden-gradient w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
                         <i class="fas fa-glass-cheers text-white text-3xl"></i>
@@ -924,6 +927,7 @@
         </div>
     </section>
 
+    <!-- Gallery -->
     <section id="gallery" class="py-20 bg-gradient-to-br from-amber-50 via-yellow-50 to-white">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
@@ -946,11 +950,13 @@
         </div>
     </section>
 
+    <!-- Modal for Gallery -->
     <div id="imageModal" class="modal">
-        <span class="close" onclick="closeModal()">×</span>
+        <span class="close" onclick="closeModal()">&times;</span>
         <img class="modal-content" id="modalImage">
     </div>
 
+    <!-- Islamic Blessing Section -->
     <section id="blessing" class="py-20 islamic-bg relative">
         <div class="container mx-auto px-4 relative z-10">
             <div class="text-center mb-16">
@@ -960,6 +966,7 @@
             </div>
             
             <div class="max-w-6xl mx-auto space-y-12">
+                <!-- Ayat Al-Quran 1 -->
                 <div class="quran-verse hover-lift">
                     <div class="arabic-text playfair text-right">
                         وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِّقَوْمٍ يَتَفَكَّرُونَ
@@ -972,6 +979,7 @@
                     </div>
                 </div>
 
+                <!-- Ayat Al-Quran 2 -->
                 <div class="quran-verse hover-lift">
                     <div class="arabic-text playfair text-right">
                         رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا
@@ -984,6 +992,7 @@
                     </div>
                 </div>
 
+                <!-- Doa untuk Pengantin -->
                 <div class="quran-verse hover-lift">
                     <div class="arabic-text playfair text-right">
                         بَارَكَ اللَّهُ لَكَ وَبَارَكَ عَلَيْكَ وَجَمَعَ بَيْنَكُمَا فِي خَيْرٍ
@@ -996,6 +1005,7 @@
                     </div>
                 </div>
 
+                <!-- Additional Blessing -->
                 <div class="text-center mt-16">
                     <div class="luxury-card rounded-3xl p-8 max-w-4xl mx-auto">
                         <div class="text-green-700 text-4xl mb-4">
@@ -1016,6 +1026,7 @@
         </div>
     </section>
 
+    <!-- Footer -->
     <footer class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white py-16">
         <div class="container mx-auto px-4 text-center">
             <div class="mb-8">
@@ -1024,6 +1035,7 @@
                 <p class="text-gray-300 text-lg mb-8">Terima kasih atas doa dan restu Anda</p>
             </div>
             
+            <!-- Contact Section -->
             <div class="mb-8 bg-gray-800 rounded-2xl p-6 max-w-2xl mx-auto">
                 <h3 class="text-xl font-semibold mb-4 text-golden">Butuh Undangan Online?</h3>
                 <p class="text-gray-300 mb-4 text-sm">
@@ -1031,8 +1043,8 @@
                     Hubungi saya untuk konsultasi dan pembuatan undangan digital yang menarik!
                 </p>
                 <a href="https://wa.me/6285183129647?text=Halo%2C%20saya%20tertarik%20untuk%20membuat%20undangan%20online%20seperti%20contoh%20yang%20saya%20lihat.%20Bisa%20dibantu%3F" 
-                    class="whatsapp-button" 
-                    target="_blank">
+                   class="whatsapp-button" 
+                   target="_blank">
                     <i class="fab fa-whatsapp"></i>
                     Hubungi via WhatsApp
                 </a>
@@ -1044,6 +1056,7 @@
         </div>
     </footer>
 
+    <!-- Scroll to Top Button -->
     <button id="scrollToTopBtn" class="fixed bottom-8 right-8 bg-golden-gradient text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform duration-300 z-50 hidden">
         <i class="fas fa-arrow-up text-xl"></i>
     </button>
@@ -1271,3 +1284,4 @@
     </script>
 </body>
 </html>
+
