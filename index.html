@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan - Yoga & Selly</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .dancing-script { font-family: 'Dancing Script', cursive; }
+        .playfair { font-family: 'Playfair Display', serif; }
+        .poppins { font-family: 'Poppins', sans-serif; }
+        
+        /* Book Animation Styles */
+        .book-container {
+            perspective: 1500px;
+            width: 100%;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.9);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+        
+        .book-container.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .book {
+            width: 80vw;
+            max-width: 800px;
+            height: 60vh;
+            max-height: 600px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 2s ease-in-out;
+        }
+        
+        .book.opening {
+            transform: rotateY(-25deg);
+        }
+        
+        .book-cover, .book-page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #f8f8f8, #e8e8e8);
+            border: 3px solid #DAA520;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transform-style: preserve-3d;
+            transition: transform 2s ease-in-out;
+        }
+        
+        .book-cover {
+            background: linear-gradient(145deg, #DAA520, #FFD700);
+            z-index: 3;
+            transform-origin: left center;
+        }
+        
+        .book-cover.open {
+            transform: rotateY(-180deg);
+        }
+        
+        .book-page {
+            background: linear-gradient(145deg, #fffef7, #f9f9f9);
+            z-index: 2;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .book-cover-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            backface-visibility: hidden;
+            color: white;
+        }
+        
+        .book-cover-back {
+            transform: rotateY(180deg);
+            background: #8B4513;
+        }
+        
+        .close-book {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .close-book:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+        
+        /* Enhanced Hero Section */
+        .hero-bg {
+            background: linear-gradient(135deg, 
+                rgba(139, 69, 19, 0.15) 0%,
+                rgba(218, 165, 32, 0.25) 25%,
+                rgba(255, 215, 0, 0.15) 50%,
+                rgba(139, 69, 19, 0.25) 75%,
+                rgba(160, 82, 45, 0.15) 100%
+            );
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: radial-gradient(circle at 20% 80%, rgba(218, 165, 32, 0.3) 0%, transparent 50%),
+                              radial-gradient(circle at 80% 20%, rgba(255, 215, 0, 0.3) 0%, transparent 50%),
+                              url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="luxury" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="%23DAA520" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23luxury)"/></svg>');
+        }
+        
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, transparent 20%, rgba(255,255,255,0.05) 21%, rgba(255,255,255,0.05) 24%, transparent 25%);
+            transform: translate(-50%, -50%) rotate(45deg);
+            animation: shimmer 25s linear infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
+            50% { transform: translate(-50%, -50%) rotate(45deg) scale(1.2); }
+            100% { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
+        }
+        
+        /* Enhanced floating animation */
+        .floating {
+            animation: floating 8s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(1deg); }
+            50% { transform: translateY(-10px) rotate(-1deg); }
+            75% { transform: translateY(-15px) rotate(0.5deg); }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 1.5s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(80px) scale(0.9);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        /* Enhanced decorative elements */
+        .hero-ornament {
+            position: absolute;
+            color: rgba(218, 165, 32, 0.4);
+            font-size: 4rem;
+            animation: heroOrnamentFloat 12s ease-in-out infinite;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+        }
+        
+        @keyframes heroOrnamentFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+            25% { transform: translateY(-30px) rotate(10deg) scale(1.1); }
+            50% { transform: translateY(-15px) rotate(-5deg) scale(0.9); }
+            75% { transform: translateY(-25px) rotate(8deg) scale(1.05); }
+        }
+        
+        /* Enhanced title styling */
+        .hero-title {
+            background: linear-gradient(135deg, #DAA520 0%, #FFD700 50%, #B8860B 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(218, 165, 32, 0.3);
+            position: relative;
+        }
+        
+        .hero-title::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
+            animation: titleShine 4s ease-in-out infinite;
+        }
+        
+        @keyframes titleShine {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+        
+        /* Enhanced glass effect */
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        
+        /* Enhanced button */
+        .luxury-button {
+            background: linear-gradient(135deg, #DAA520, #FFD700);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(218, 165, 32, 0.3);
+        }
+        
+        .luxury-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .luxury-button:hover::before {
+            left: 100%;
+        }
+        
+        .luxury-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(218, 165, 32, 0.5);
+        }
+        
+        .luxury-button:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+        
+        /* Other existing styles */
+        .luxury-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(218, 165, 32, 0.2);
+            box-shadow: 
+                0 8px 32px rgba(0,0,0,0.1),
+                0 0 0 1px rgba(255,255,255,0.2) inset;
+        }
+        
+        .golden-gradient {
+            background: linear-gradient(135deg, #DAA520, #FFD700, #B8860B);
+        }
+        
+        .text-golden {
+            background: linear-gradient(135deg, #DAA520, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .countdown-item {
+            background: linear-gradient(145deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(218, 165, 32, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .countdown-item:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(218, 165, 32, 0.3);
+        }
+        
+        .gallery-item {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(218, 165, 32, 0.3), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+        
+        .gallery-item:hover::before {
+            opacity: 1;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.08) rotate(1deg);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .gallery-item img {
+            transition: transform 0.4s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(10px);
+        }
+        
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90%;
+            animation: modalZoom 0.5s ease-out;
+            border-radius: 15px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+        
+        @keyframes modalZoom {
+            from { 
+                opacity: 0;
+                transform: scale(0.5) rotate(5deg);
+            }
+            to { 
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+        
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #fff;
+            font-size: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+        
+        .close:hover {
+            transform: scale(1.2) rotate(90deg);
+            color: #DAA520;
+        }
+        
+        .love-animation {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1000;
+            font-size: 20px;
+        }
+        
+        @keyframes loveFloat {
+            0% { 
+                transform: translateY(0) scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-50px) scale(1.2) rotate(180deg);
+                opacity: 0.8;
+            }
+            100% { 
+                transform: translateY(-120px) scale(0) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            animation: particleFloat 4s ease-out infinite;
+        }
+        
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) scale(0);
+                opacity: 0;
+            }
+        }
+        
+        .navbar-glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(218, 165, 32, 0.2);
+        }
+        
+        .section-divider {
+            background: linear-gradient(90deg, transparent, #DAA520, transparent);
+            height: 2px;
+            width: 100px;
+            margin: 0 auto;
+        }
+        
+        .ornament {
+            position: absolute;
+            color: rgba(218, 165, 32, 0.2);
+            font-size: 3rem;
+            animation: ornamentFloat 8s ease-in-out infinite;
+        }
+        
+        @keyframes ornamentFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(5deg); }
+            50% { transform: translateY(-10px) rotate(-5deg); }
+            75% { transform: translateY(-15px) rotate(3deg); }
+        }
+        
+        .text-shadow-golden {
+            text-shadow: 2px 2px 4px rgba(218, 165, 32, 0.3);
+        }
+        
+        .hover-lift {
+            transition: all 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-5px);
+        }
+        
+        .islamic-bg {
+            background: linear-gradient(135deg, 
+                rgba(34, 139, 34, 0.1) 0%,
+                rgba(0, 100, 0, 0.1) 50%,
+                rgba(34, 139, 34, 0.1) 100%
+            );
+            position: relative;
+        }
+        
+        .islamic-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="islamic" x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M15,5 Q20,10 15,15 Q10,10 15,5 M15,15 Q20,20 15,25 Q10,20 15,15" fill="none" stroke="%23228B22" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23islamic)"/></svg>');
+        }
+        
+        .quran-verse {
+            background: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(240,255,240,0.9));
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(34, 139, 34, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .quran-verse::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(34, 139, 34, 0.05), transparent);
+            animation: shimmerQuran 8s linear infinite;
+        }
+        
+        @keyframes shimmerQuran {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        
+        .arabic-text {
+            font-size: 1.5rem;
+            line-height: 2.5;
+            color: #2d5016;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .translation-text {
+            font-style: italic;
+            color: #4a5d3a;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .verse-reference {
+            color: #228B22;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Enhanced ornamental decorations */
+        .decorative-border {
+            position: relative;
+        }
+        
+        .decorative-border::before,
+        .decorative-border::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #DAA520, transparent);
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .decorative-border::before {
+            left: -120px;
+        }
+        
+        .decorative-border::after {
+            right: -120px;
+        }
+
+        /* WhatsApp Button Styling */
+        .whatsapp-button {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+        
+        .whatsapp-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Scroll to Top Button */
+        #scrollToTopBtn {
+            background: linear-gradient(135deg, #DAA520, #FFD700);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #scrollToTopBtn:hover {
+            background: linear-gradient(135deg, #FFD700, #DAA520);
+        }
+
+        /* New Hero Section Enhancements */
+        .hero-section-wrapper {
+            position: relative;
+            z-index: 10; /* Ensure content is above background effects */
+            padding: 2rem; /* Add some padding for smaller screens */
+        }
+
+        .hero-ornament-new {
+            position: absolute;
+            color: rgba(255, 215, 0, 0.3); /* Lighter gold for subtle sparkle */
+            font-size: 5rem; /* Slightly larger */
+            animation: heroOrnamentFloatNew 15s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.2)); /* Softer glow */
+            /* pointer-events: none; */ /* Hapus atau komentari baris ini agar bisa di-hover */
+            transition: transform 0.3s ease, color 0.3s ease; /* Tambahkan transisi untuk efek hover */
+        }
+
+        /* Efek Hover untuk Ornamen */
+        .hero-ornament-new:hover {
+            transform: scale(1.2) rotate(10deg) !important; /* Perbesar dan putar sedikit, !important untuk override animasi float */
+            color: rgba(255, 215, 0, 0.8); /* Ubah warna menjadi lebih solid */
+            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5)); /* Perkuat glow */
+            cursor: pointer; /* Menunjukkan bahwa elemen bisa diinteraksi */
+        }
+
+        @keyframes heroOrnamentFloatNew {
+            0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); opacity: 0.8; }
+            25% { transform: translateY(-40px) rotate(15deg) scale(1.1); opacity: 1; }
+            50% { transform: translateY(-20px) rotate(-10deg) scale(0.95); opacity: 0.7; }
+            75% { transform: translateY(-35px) rotate(12deg) scale(1.08); opacity: 0.9; }
+        }
+
+        .hero-title-new {
+            font-size: 8rem; /* Even larger for impact */
+            line-height: 0.9; /* Tighter line height */
+            letter-spacing: -0.05em; /* Slightly tighter letter spacing */
+            position: relative;
+            display: inline-block; /* To apply pseudo-elements correctly */
+            padding: 0 10px; /* Small padding to prevent clipping */
+        }
+
+        .hero-title-new::before,
+        .hero-title-new::after {
+            content: '';
+            position: absolute;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+            animation: titleShineNew 3s infinite linear;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .hero-title-new::before {
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            transform: skewX(-20deg);
+        }
+
+        .hero-title-new::after {
+            bottom: 0;
+            right: -100%;
+            width: 50%;
+            height: 100%;
+            transform: skewX(20deg);
+            animation-delay: 1.5s; /* Stagger the shine */
+        }
+
+        @keyframes titleShineNew {
+            0% { left: -100%; opacity: 0; }
+            10% { opacity: 1; }
+            60% { left: 100%; opacity: 1; }
+            100% { left: 100%; opacity: 0; }
+        }
+
+        /* Responsive adjustments for hero title */
+        @media (max-width: 768px) {
+            .hero-title-new {
+                font-size: 5rem;
+            }
+        }
+        @media (max-width: 640px) {
+            .hero-title-new {
+                font-size: 3.5rem;
+            }
+        }
+
+        .hero-subtitle {
+            font-size: 1.8rem; /* Slightly larger subtitle */
+            font-weight: 300; /* Lighter weight */
+            color: #4a5568; /* Darker gray for better contrast */
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.05); /* Subtle shadow */
+        }
+
+        .hero-date-box {
+            background: rgba(255, 255, 255, 0.25); /* More opaque glass */
+            border: 2px solid rgba(255, 255, 255, 0.4); /* Stronger border */
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15); /* More pronounced shadow */
+            padding: 1.5rem 3rem; /* More generous padding */
+            border-radius: 40px; /* More rounded */
+        }
+
+        .hero-date-box p {
+            color: #2d3748; /* Darker text for date */
+            font-weight: 600; /* Bolder date */
+        }
+
+        .hero-date-box .text-lg {
+            color: #4a5568; /* Darker text for location */
+        }
+
+        .luxury-button-hero {
+            padding: 1.5rem 4rem; /* Larger button */
+            font-size: 1.5rem; /* Larger text */
+            border-radius: 50px; /* More rounded */
+            box-shadow: 0 12px 30px rgba(218, 165, 32, 0.4); /* Stronger shadow */
+        }
+        .luxury-button-hero:hover {
+            transform: translateY(-5px) scale(1.07); /* More pronounced hover */
+            box-shadow: 0 20px 45px rgba(218, 165, 32, 0.6);
+        }
+    </style>
+</head>
+<body class="poppins bg-gradient-to-br from-amber-50 via-white to-yellow-50">
+    <!-- Floating Particles -->
+    <div id="particles"></div>
+
+    <!-- Book Animation Container -->
+    <div class="book-container" id="bookContainer">
+        <button class="close-book" onclick="closeBook()">&times;</button>
+        <div class="book" id="book">
+            <div class="book-cover" id="bookCover">
+                <div class="book-cover-content">
+                    <div class="text-4xl md:text-6xl dancing-script mb-4">Undangan Pernikahan</div>
+                    <div class="w-20 h-1 bg-white mx-auto mb-6 rounded"></div>
+                    <div class="text-2xl md:text-3xl playfair mb-2">Yoga & Selly</div>
+                    <div class="text-sm tracking-wider opacity-90">06 September 2025</div>
+                </div>
+                <div class="book-cover-content book-cover-back">
+                    <div class="text-xl text-amber-100">Sampul Belakang</div>
+                </div>
+            </div>
+            <div class="book-page" id="bookPage">
+                <div class="text-center">
+                    <div class="text-3xl md:text-4xl dancing-script text-golden mb-6">
+                        Selamat Datang
+                    </div>
+                    <div class="text-lg text-gray-700 mb-8 leading-relaxed">
+                        Dengan penuh rasa syukur kepada Allah SWT,<br>
+                        kami mengundang Bapak/Ibu/Saudara/i<br>
+                        untuk hadir dalam acara pernikahan kami
+                    </div>
+                    <div class="text-2xl dancing-script text-golden mb-4">Yoga & Selly</div>
+                    <div class="text-gray-600">Sabtu, 06 September 2025</div>
+                    <button onclick="continueToWebsite()" class="luxury-button text-white px-8 py-3 rounded-full font-semibold text-lg shadow-xl mt-8">
+                        <i class="fas fa-arrow-right mr-2"></i>
+                        Lihat Detail Acara
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-bg min-h-screen flex items-center justify-center relative overflow-hidden">
+        <!-- Enhanced Ornamental Decorations -->
+        <div class="hero-ornament-new" style="top: 5%; left: 8%; animation-delay: 0s;"><i class="fas fa-leaf"></i></div>
+        <div class="hero-ornament-new" style="top: 15%; right: 12%; animation-delay: -3s;"><i class="fas fa-gem"></i></div>
+        <div class="hero-ornament-new" style="bottom: 10%; left: 15%; animation-delay: -6s;"><i class="fas fa-crown"></i></div>
+        <div class="hero-ornament-new" style="bottom: 25%; right: 8%; animation-delay: -2s;"><i class="fas fa-star"></i></div>
+        <div class="hero-ornament-new" style="top: 40%; left: 5%; animation-delay: -4s;"><i class="fas fa-heart"></i></div>
+        <div class="hero-ornament-new" style="top: 60%; right: 6%; animation-delay: -7s;"><i class="fas fa-ring"></i></div>
+        <div class="hero-ornament-new" style="top: 70%; left: 10%; animation-delay: -1s;"><i class="fas fa-dove"></i></div>
+        <div class="hero-ornament-new" style="bottom: 30%; right: 18%; animation-delay: -5s;"><i class="fas fa-flower"></i></div>
+        
+        <div class="text-center hero-section-wrapper max-w-5xl mx-auto">
+            <div class="floating fade-in-up">
+                <div class="mb-12">
+                    <div class="text-golden text-2xl md:text-3xl font-light mb-4 tracking-widest decorative-border">
+                        THE WEDDING OF
+                    </div>
+                    <div class="section-divider mb-10"></div>
+                </div>
+                
+                <h1 class="hero-title dancing-script hero-title-new font-bold mb-8">
+                    Yoga & Selly
+                </h1>
+                
+                <div class="playfair hero-subtitle mb-10 max-w-3xl mx-auto">
+                    Dengan penuh kebahagiaan dan kerendahan hati, kami mengundang Anda
+                </div>
+                
+                <div class="glass-effect hero-date-box mb-12 inline-block">
+                    <p class="text-xl md:text-2xl font-medium mb-2">Sabtu, 06 September 2025</p>
+                    <p class="text-gray-600 text-lg">Lampung, Indonesia</p>
+                </div>
+                
+                <button onclick="openBook()" class="luxury-button luxury-button-hero text-white font-semibold shadow-2xl">
+                    <i class="fas fa-book-open mr-3"></i>
+                    Buka Undangan
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full navbar-glass shadow-lg z-50 transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-center space-x-8">
+                <a href="#home" class="text-gray-700 hover:text-yellow-600 transition-colors font-medium">Home</a>
+                <a href="#details" class="text-gray-700 hover:text-yellow-600 transition-colors font-medium">Detail</a>
+                <a href="#gallery" class="text-gray-700 hover:text-yellow-600 transition-colors font-medium">Galeri</a>
+                <a href="#blessing" class="text-gray-700 hover:text-yellow-600 transition-colors font-medium">Doa</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Countdown Section -->
+    <section class="py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-yellow-50 via-amber-50 to-yellow-50"></div>
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <div class="mb-12">
+                <h2 class="dancing-script text-5xl md:text-6xl text-golden mb-4">Menuju Hari Bahagia</h2>
+                <div class="section-divider"></div>
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-6 max-w-4xl mx-auto" id="countdown">
+                <div class="countdown-item rounded-2xl p-8 text-center min-w-32 hover-lift">
+                    <div class="text-4xl font-bold text-golden mb-2" id="days">03</div>
+                    <div class="text-sm text-gray-600 font-medium tracking-wider">HARI</div>
+                </div>
+                <div class="countdown-item rounded-2xl p-8 text-center min-w-32 hover-lift">
+                    <div class="text-4xl font-bold text-golden mb-2" id="hours">34</div>
+                    <div class="text-sm text-gray-600 font-medium tracking-wider">JAM</div>
+                </div>
+                <div class="countdown-item rounded-2xl p-8 text-center min-w-32 hover-lift">
+                    <div class="text-4xl font-bold text-golden mb-2" id="minutes">10</div>
+                    <div class="text-sm text-gray-600 font-medium tracking-wider">MENIT</div>
+                </div>
+                <div class="countdown-item rounded-2xl p-8 text-center min-w-32 hover-lift">
+                    <div class="text-4xl font-bold text-golden mb-2" id="seconds">10</div>
+                    <div class="text-sm text-gray-600 font-medium tracking-wider">DETIK</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wedding Details -->
+    <section id="details" class="py-20 relative">
+        <div class="absolute inset-0 bg-gradient-to-br from-white via-yellow-50 to-amber-50"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="dancing-script text-5xl md:text-6xl text-golden mb-4">Detail Acara</h2>
+                <div class="section-divider mb-6"></div>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Kehadiran dan doa restu Anda merupakan kebahagiaan terbesar bagi kami</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+                <!-- Akad -->
+                <div class="luxury-card rounded-3xl p-10 text-center hover-lift">
+                    <div class="golden-gradient w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                        <i class="fas fa-mosque text-white text-3xl"></i>
+                    </div>
+                    <h3 class="playfair text-3xl text-gray-800 mb-6 font-semibold">Akad Nikah</h3>
+                    <div class="space-y-4 text-gray-600 mb-8">
+                        <div class="flex items-center justify-center space-x-3">
+                            <i class="fas fa-calendar text-yellow-600"></i>
+                            <span class="font-medium">Sabtu, 06 September 2025</span>
+                        </div>
+                        <div class="flex items-center justify-center space-x-3">
+                            <i class="fas fa-clock text-yellow-600"></i>
+                            <span class="font-medium">08:00 - 10:00 WIB</span>
+                        </div>
+                        <div class="flex items-center justify-center space-x-3">
+                            <i class="fas fa-map-marker-alt text-yellow-600"></i>
+                            <span class="font-medium">Masjid Al-Hikmah</span>
+                        </div>
+                        <p class="text-sm italic">Jl. Sudirman No. 123, Lampung Selatan</p>
+                    </div>
+                    <button onclick="openMap('akad')" class="luxury-button text-white px-8 py-3 rounded-full hover:scale-105 transition-transform shadow-lg">
+                        <i class="fas fa-map-marked-alt mr-2"></i>
+                        Lihat Lokasi
+                    </button>
+                </div>
+
+                <!-- Resepsi -->
+                <div class="luxury-card rounded-3xl p-10 text-center hover-lift">
+                    <div class="golden-gradient w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                        <i class="fas fa-glass-cheers text-white text-3xl"></i>
+                    </div>
+                    <h3 class="playfair text-3xl text-gray-800 mb-6 font-semibold">Resepsi</h3>
+                    <div class="space-y-4 text-gray-600 mb-8">
+                        <div class="flex items-center justify-center space-x-3">
+                            <i class="fas fa-calendar text-yellow-600"></i>
+                            <span class="font-medium">Sabtu, 06 September 2025</span>
+                        </div>
+                        <div class="flex items-center justify-center space-x-3">
+                            <i class="fas fa-clock text-yellow-600"></i>
+                            <span class="font-medium">19:00 - 22:00 WIB</span>
+                        </div>
+                        <div class="flex items-center justify-center space-x-3">
+                            <i class="fas fa-map-marker-alt text-yellow-600"></i>
+                            <span class="font-medium">Gedung Serbaguna Melati</span>
+                        </div>
+                        <p class="text-sm italic">Jl. Gatot Subroto No. 456, Lampung Selatan</p>
+                    </div>
+                    <button onclick="openMap('resepsi')" class="luxury-button text-white px-8 py-3 rounded-full hover:scale-105 transition-transform shadow-lg">
+                        <i class="fas fa-map-marked-alt mr-2"></i>
+                        Lihat Lokasi
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery -->
+    <section id="gallery" class="py-20 bg-gradient-to-br from-amber-50 via-yellow-50 to-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="dancing-script text-5xl md:text-6xl text-golden mb-4">Galeri Foto</h2>
+                <div class="section-divider mb-6"></div>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Momen-momen indah perjalanan cinta kami</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                <div class="gallery-item rounded-2xl overflow-hidden shadow-xl cursor-pointer" onclick="openModal(this)">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/ce974e3c-a14e-4c56-96f5-5c15f868a233.png" alt="Elegant Indonesian couple in luxurious traditional wedding attire, bride in golden kebaya with intricate beadwork, groom in royal batik, studio portrait with dramatic lighting" class="w-full h-80 object-cover">
+                </div>
+                <div class="gallery-item rounded-2xl overflow-hidden shadow-xl cursor-pointer" onclick="openModal(this)">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/0e2ccc15-0038-4ab4-99c7-d2c7d4abfd17.png" alt="Romantic pre-wedding photoshoot in a luxury garden setting, Indonesian couple in modern formal wear, golden hour lighting with bokeh background" class="w-full h-80 object-cover">
+                </div>
+                <div class="gallery-item rounded-2xl overflow-hidden shadow-xl cursor-pointer" onclick="openModal(this)">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d5336963-7e98-4739-9d13-89a3a1911b37.png" alt="Close-up artistic shot of elegant engagement ring with diamond, soft lighting, beautiful hands with henna designs, luxury jewelry photography" class="w-full h-80 object-cover">
+                </div>
+                <div class="gallery-item rounded-2xl overflow-hidden shadow-xl cursor-pointer" onclick="openModal(this)">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/c27a8c91-eb96-4a60-82e9-c3dab5fcd29e.png" alt="Silhouette of Indonesian couple dancing on a beach at sunset, romantic atmosphere, golden sky reflection on water, dramatic composition" class="w-full h-80 object-cover">
+                </div>
+                <div class="gallery-item rounded-2xl overflow-hidden shadow-xl cursor-pointer" onclick="openModal(this)">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1e451a88-471a-48b4-8728-19ac38a5cf75.png" alt="Luxury wedding venue decoration with golden flowers and elegant lighting, traditional Indonesian wedding setup with modern touches" class="w-full h-80 object-cover">
+                </div>
+                <div class="gallery-item rounded-2xl overflow-hidden shadow-xl cursor-pointer" onclick="openModal(this)">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f5a43c77-ac01-467d-9f7a-5665013702d4.png" alt="Candid moments of Indonesian couple laughing together, natural joy and happiness, outdoor lifestyle photoshoot with warm natural lighting" class="w-full h-80 object-cover">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal for Gallery -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+    <!-- Islamic Blessing Section -->
+    <section id="blessing" class="py-20 islamic-bg relative">
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="dancing-script text-5xl md:text-6xl text-green-700 mb-4">Doa dan Berkah</h2>
+                <div class="section-divider bg-gradient-to-r from-transparent via-green-600 to-transparent mb-6"></div>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Semoga Allah SWT memberkahi pernikahan kami dengan kebahagiaan dan kedamaian</p>
+            </div>
+            
+            <div class="max-w-6xl mx-auto space-y-12">
+                <!-- Ayat Al-Quran 1 -->
+                <div class="quran-verse hover-lift">
+                    <div class="arabic-text playfair text-right">
+                        وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِّقَوْمٍ يَتَفَكَّرُونَ
+                    </div>
+                    <div class="translation-text text-lg">
+                        "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir."
+                    </div>
+                    <div class="verse-reference text-lg">
+                        (QS. Ar-Rum: 21)
+                    </div>
+                </div>
+
+                <!-- Ayat Al-Quran 2 -->
+                <div class="quran-verse hover-lift">
+                    <div class="arabic-text playfair text-right">
+                        رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا
+                    </div>
+                    <div class="translation-text text-lg">
+                        "Ya Tuhan kami, anugrahkanlah kepada kami pasangan-pasangan kami dan keturunan kami sebagai penyenang hati (kami), dan jadikanlah kami pemimpin bagi orang-orang yang bertakwa."
+                    </div>
+                    <div class="verse-reference text-lg">
+                        (QS. Al-Furqan: 74)
+                    </div>
+                </div>
+
+                <!-- Doa untuk Pengantin -->
+                <div class="quran-verse hover-lift">
+                    <div class="arabic-text playfair text-right">
+                        بَارَكَ اللَّهُ لَكَ وَبَارَكَ عَلَيْكَ وَجَمَعَ بَيْنَكُمَا فِي خَيْرٍ
+                    </div>
+                    <div class="translation-text text-lg">
+                        "Semoga Allah memberkahi kalian, dan melimpahkan berkah atas kalian, dan mengumpulkan kalian berdua dalam kebaikan."
+                    </div>
+                    <div class="verse-reference text-lg">
+                        (Doa untuk Pengantin Baru)
+                    </div>
+                </div>
+
+                <!-- Additional Blessing -->
+                <div class="text-center mt-16">
+                    <div class="luxury-card rounded-3xl p-8 max-w-4xl mx-auto">
+                        <div class="text-green-700 text-4xl mb-4">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3 class="playfair text-2xl text-gray-800 mb-4 font-semibold">Doa Terbaik Kami</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            Semoga pernikahan Sarah dan Ahmad menjadi jalan menuju ridha Allah SWT, 
+                            dipenuhi dengan kebahagiaan, kesehatan, rezeki yang berkah, dan keturunan yang sholeh dan sholehah. 
+                            Semoga Allah mempersatukan hati keduanya dalam cinta dan kasih sayang hingga akhir hayat.
+                        </p>
+                        <div class="mt-6 text-green-600 font-semibold">
+                            Aamiin Ya Rabbal Alamiin
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white py-16">
+        <div class="container mx-auto px-4 text-center">
+            <div class="mb-8">
+                <div class="dancing-script text-5xl mb-4 text-golden">Yoga & Selly</div>
+                <div class="section-divider bg-gradient-to-r from-transparent via-yellow-500 to-transparent mb-6"></div>
+                <p class="text-gray-300 text-lg mb-8">Terima kasih atas doa dan restu Anda</p>
+            </div>
+            
+            <!-- Contact Section -->
+            <div class="mb-8 bg-gray-800 rounded-2xl p-6 max-w-2xl mx-auto">
+                <h3 class="text-xl font-semibold mb-4 text-golden">Butuh Undangan Online?</h3>
+                <p class="text-gray-300 mb-4 text-sm">
+                    Ingin membuat undangan pernikahan online yang elegan seperti ini? 
+                    Hubungi saya untuk konsultasi dan pembuatan undangan digital yang menarik!
+                </p>
+                <a href="https://wa.me/6281234567890?text=Halo%2C%20saya%20tertarik%20untuk%20membuat%20undangan%20online%20seperti%20contoh%20yang%20saya%20lihat.%20Bisa%20dibantu%3F" 
+                   class="whatsapp-button" 
+                   target="_blank">
+                    <i class="fab fa-whatsapp"></i>
+                    Hubungi via WhatsApp
+                </a>
+            </div>
+            
+            <div class="border-t border-gray-700 pt-8">
+                <p class="text-gray-400">© 2024 Yoga & Selly Wedding. Made with love and blessed by Allah SWT</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollToTopBtn" class="fixed bottom-8 right-8 bg-golden-gradient text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform duration-300 z-50 hidden">
+        <i class="fas fa-arrow-up text-xl"></i>
+    </button>
+
+    <script>
+        // Book Animation Functions
+        function openBook() {
+            const bookContainer = document.getElementById('bookContainer');
+            const book = document.getElementById('book');
+            const bookCover = document.getElementById('bookCover');
+            
+            bookContainer.classList.add('active');
+            
+            setTimeout(() => {
+                book.classList.add('opening');
+                setTimeout(() => {
+                    bookCover.classList.add('open');
+                }, 500);
+            }, 300);
+        }
+
+        function closeBook() {
+            const bookContainer = document.getElementById('bookContainer');
+            const book = document.getElementById('book');
+            const bookCover = document.getElementById('bookCover');
+            
+            bookCover.classList.remove('open');
+            setTimeout(() => {
+                book.classList.remove('opening');
+                setTimeout(() => {
+                    bookContainer.classList.remove('active');
+                }, 500);
+            }, 500);
+        }
+
+        function continueToWebsite() {
+            // Tutup buku terlebih dahulu
+            const bookContainer = document.getElementById('bookContainer');
+            const book = document.getElementById('book');
+            const bookCover = document.getElementById('bookCover');
+            
+            bookCover.classList.remove('open');
+            setTimeout(() => {
+                book.classList.remove('opening');
+                setTimeout(() => {
+                    bookContainer.classList.remove('active');
+                    // Setelah buku tertutup, scroll ke detail acara
+                    setTimeout(() => {
+                        scrollToSection('details');
+                    }, 300);
+                }, 500);
+            }, 500);
+        }
+
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle text-yellow-400 opacity-30';
+                particle.innerHTML = Math.random() > 0.5 ? '✨' : '⭐';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 4 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Countdown Timer
+        function updateCountdown() {
+            // Mengubah tanggal pernikahan menjadi 06 September 2025
+            const weddingDate = new Date('2025-09-06T08:00:00').getTime(); 
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+
+            if (distance < 0) {
+                document.getElementById('countdown').innerHTML = '<h3 class="text-3xl text-golden dancing-script">Hari Pernikahan Telah Tiba!</h3>';
+            }
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Smooth Scrolling
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // Navigation smooth scroll
+        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Gallery Modal
+        function openModal(img) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.style.display = 'block';
+            modalImg.src = img.querySelector('img').src;
+            modalImg.alt = img.querySelector('img').alt;
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Map Functions
+        function openMap(location) {
+            let url = '';
+            if (location === 'akad') {
+                url = 'https://maps.google.com/maps?q=Masjid+Al-Hikmah+Lampung&t=&z=13&ie=UTF8&iwloc=&output=embed';
+            } else {
+                url = 'https://maps.google.com/maps?q=Gedung+Serbaguna+Melati+Lampung&t=&z=13&ie=UTF8&iwloc=&output=embed';
+            }
+            window.open(url, '_blank');
+        }
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in-up');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Add click effects
+        document.addEventListener('click', function(e) {
+            if (e.target.tagName === 'BUTTON' || e.target.closest('button')) {
+                createClickEffect(e.pageX, e.pageY);
+            }
+        });
+
+        function createClickEffect(x, y) {
+            const effect = document.createElement('div');
+            effect.style.position = 'fixed';
+            effect.style.left = x + 'px';
+            effect.style.top = y + 'px';
+            effect.style.width = '30px';
+            effect.style.height = '30px';
+            effect.style.background = 'radial-gradient(circle, #DAA520, transparent)';
+            effect.style.borderRadius = '50%';
+            effect.style.pointerEvents = 'none';
+            effect.style.animation = 'loveFloat 1s ease-out forwards';
+            effect.style.zIndex = '1000';
+            
+            document.body.appendChild(effect);
+            
+            setTimeout(() => {
+                effect.remove();
+            }, 1000);
+        }
+
+        // Initialize particles on load
+        window.addEventListener('load', function() {
+            createParticles();
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+
+        // Scroll to Top functionality
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) { // Show button after scrolling 300px
+                scrollToTopBtn.classList.remove('hidden');
+            } else {
+                scrollToTopBtn.classList.add('hidden');
+            }
+        });
+
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>
+
