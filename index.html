@@ -615,26 +615,24 @@
         /* New Hero Section Enhancements */
         .hero-section-wrapper {
             position: relative;
-            z-index: 10; /* Ensure content is above background effects */
-            padding: 2rem; /* Add some padding for smaller screens */
+            z-index: 10;
+            padding: 2rem;
         }
 
         .hero-ornament-new {
             position: absolute;
-            color: rgba(255, 215, 0, 0.3); /* Lighter gold for subtle sparkle */
-            font-size: 5rem; /* Slightly larger */
+            color: rgba(255, 215, 0, 0.3);
+            font-size: 5rem;
             animation: heroOrnamentFloatNew 15s ease-in-out infinite;
-            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.2)); /* Softer glow */
-            /* pointer-events: none; */ /* Hapus atau komentari baris ini agar bisa di-hover */
-            transition: transform 0.3s ease, color 0.3s ease; /* Tambahkan transisi untuk efek hover */
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.2));
+            transition: transform 0.3s ease, color 0.3s ease;
         }
 
-        /* Efek Hover untuk Ornamen */
         .hero-ornament-new:hover {
-            transform: scale(1.2) rotate(10deg) !important; /* Perbesar dan putar sedikit, !important untuk override animasi float */
-            color: rgba(255, 215, 0, 0.8); /* Ubah warna menjadi lebih solid */
-            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5)); /* Perkuat glow */
-            cursor: pointer; /* Menunjukkan bahwa elemen bisa diinteraksi */
+            transform: scale(1.2) rotate(10deg) !important;
+            color: rgba(255, 215, 0, 0.8);
+            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5));
+            cursor: pointer;
         }
 
         @keyframes heroOrnamentFloatNew {
@@ -644,51 +642,19 @@
             75% { transform: translateY(-35px) rotate(12deg) scale(1.08); opacity: 0.9; }
         }
 
+        /* Responsive adjustments for hero title - REMOVED SHINE ANIMATION */
         .hero-title-new {
-            font-size: 8rem; /* Even larger for impact */
-            line-height: 0.9; /* Tighter line height */
-            letter-spacing: -0.05em; /* Slightly tighter letter spacing */
+            font-size: 8rem;
+            line-height: 0.9;
+            letter-spacing: -0.05em;
             position: relative;
-            display: inline-block; /* To apply pseudo-elements correctly */
-            padding: 0 10px; /* Small padding to prevent clipping */
-            white-space: nowrap; /* Prevent line breaks */
+            display: inline-block;
+            padding: 0 10px;
+            white-space: nowrap;
         }
 
-        .hero-title-new::before,
-        .hero-title-new::after {
-            content: '';
-            position: absolute;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
-            animation: titleShineNew 3s infinite linear;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .hero-title-new::before {
-            top: 0;
-            left: -100%;
-            width: 50%;
-            height: 100%;
-            transform: skewX(-20deg);
-        }
-
-        .hero-title-new::after {
-            bottom: 0;
-            right: -100%;
-            width: 50%;
-            height: 100%;
-            transform: skewX(20deg);
-            animation-delay: 1.5s; /* Stagger the shine */
-        }
-
-        @keyframes titleShineNew {
-            0% { left: -100%; opacity: 0; }
-            10% { opacity: 1; }
-            60% { left: 100%; opacity: 1; }
-            100% { left: 100%; opacity: 0; }
-        }
-
-        /* Responsive adjustments for hero title */
+        /* Removed the ::before and ::after pseudo-elements and their animations */
+        
         @media (max-width: 768px) {
             .hero-title-new {
                 font-size: 5rem;
@@ -706,37 +672,37 @@
         }
 
         .hero-subtitle {
-            font-size: 1.8rem; /* Slightly larger subtitle */
-            font-weight: 300; /* Lighter weight */
-            color: #4a5568; /* Darker gray for better contrast */
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.05); /* Subtle shadow */
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: #4a5568;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.05);
         }
 
         .hero-date-box {
-            background: rgba(255, 255, 255, 0.25); /* More opaque glass */
-            border: 2px solid rgba(255, 255, 255, 0.4); /* Stronger border */
-            box-shadow: 0 10px 40px rgba(0,0,0,0.15); /* More pronounced shadow */
-            padding: 1.5rem 3rem; /* More generous padding */
-            border-radius: 40px; /* More rounded */
+            background: rgba(255, 255, 255, 0.25);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            padding: 1.5rem 3rem;
+            border-radius: 40px;
         }
 
         .hero-date-box p {
-            color: #2d3748; /* Darker text for date */
-            font-weight: 600; /* Bolder date */
+            color: #2d3748;
+            font-weight: 600;
         }
 
         .hero-date-box .text-lg {
-            color: #4a5568; /* Darker text for location */
+            color: #4a5568;
         }
 
         .luxury-button-hero {
-            padding: 1.5rem 4rem; /* Larger button */
-            font-size: 1.5rem; /* Larger text */
-            border-radius: 50px; /* More rounded */
-            box-shadow: 0 12px 30px rgba(218, 165, 32, 0.4); /* Stronger shadow */
+            padding: 1.5rem 4rem;
+            font-size: 1.5rem;
+            border-radius: 50px;
+            box-shadow: 0 12px 30px rgba(218, 165, 32, 0.4);
         }
         .luxury-button-hero:hover {
-            transform: translateY(-5px) scale(1.07); /* More pronounced hover */
+            transform: translateY(-5px) scale(1.07);
             box-shadow: 0 20px 45px rgba(218, 165, 32, 0.6);
         }
     </style>
